@@ -5,9 +5,11 @@
   "author": "TAKAHASHI Yuto <ytaka23dev@gmail.com",
   "license": "BSD-3-Clause",
   "scripts": {
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "build": "elm make src/elm/Main.elm"
   },
   "devDependencies": {
+    "elm": "^0.19.0-no-deps",
     "elm-webpack-loader": "^5.0.0",
     "file-loader": "^4.0.0",
     "webpack": "^4.35.0",
