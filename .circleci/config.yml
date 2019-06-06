@@ -1,8 +1,10 @@
 version: 2.1
+
 jobs:
+
   build:
     docker:
-    - image: node:11.15.0-alpine
+    - image: circleci/node:11.15.0
     steps:
     - checkout
     - run:
@@ -11,3 +13,11 @@ jobs:
     - run:
         name: Build
         command: yarn build
+    - run:
+        name: Deploy
+        command: |
+            git config --global user.name "TAKAHASHI Yuto"
+            git config --global user.email "ytaka23dev@gmail.com"
+            git add docs
+            git commit -m "Publish by CircleCI [ci skip]"
+            git push
