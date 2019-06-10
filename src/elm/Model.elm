@@ -6,9 +6,12 @@ module Model exposing
     , Msg(..)
     , Product
     , initModel
+    , listCartItems
     )
 
 import Dict exposing (Dict)
+import List.Extra as List
+import Maybe.Extra as Maybe
 
 
 type Msg
@@ -63,3 +66,27 @@ initModel =
     , cart = Dict.empty
     , checkoutStatus = Nothing
     }
+
+
+listCartItems : List Product -> Cart -> List CartItem
+listCartItems products cart =
+    let
+        toCartItem ( id, quantity ) =
+            case findProduct products id of
+                Nothing ->
+                    Nothing
+
+                Just product ->
+                    Just
+                        { id = product.id
+                        , title = product.title
+                        , price = product.price
+                        , quantity = quantity
+                        }
+    in
+    Maybe.values <| List.map toCartItem <| Dict.toList cart
+
+
+findProduct : List Product -> ProductId -> Maybe Product
+findProduct products id =
+    List.find (\p -> p.id == id) products
