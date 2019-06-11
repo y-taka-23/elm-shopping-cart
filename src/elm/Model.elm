@@ -61,10 +61,18 @@ type CheckoutStatus
 
 initModel : Model
 initModel =
-    { products = []
-    , loading = True
-    , cart = Dict.empty
-    , checkoutStatus = Nothing
+    { products =
+        [ { id = 1, title = "iPad 4 Mini", price = 500.01, inventory = 1 }
+        , { id = 2, title = "H&M T-Shirt White", price = 10.99, inventory = 10 }
+        , { id = 3, title = "Charli XCX - Sucker CD", price = 19.99, inventory = 0 }
+        ]
+    , loading = False
+    , cart =
+        Dict.fromList
+            [ ( 1, 1 )
+            , ( 3, 5 )
+            ]
+    , checkoutStatus = Just Success
     }
 
 
