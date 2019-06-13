@@ -70,9 +70,9 @@ initModel =
     , cart =
         Dict.fromList
             [ ( 1, 1 )
-            , ( 3, 5 )
+            , ( 3, 2 )
             ]
-    , checkoutStatus = Just Success
+    , checkoutStatus = Just Fail
     }
 
 

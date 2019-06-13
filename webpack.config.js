@@ -26,6 +26,23 @@ module.exports = {
         exclude: [/elm-stuff/, /node_modules/],
         loader: 'elm-webpack-loader?verbose=true',
       },
+      {
+        test: /\.css$/,
+        loader: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [
+                require('tailwindcss'),
+                require('autoprefixer'),
+              ],
+            },
+          },
+        ],
+      },
     ],
     noParse: /\.elm$/
   },
