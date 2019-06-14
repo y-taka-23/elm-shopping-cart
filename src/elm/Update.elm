@@ -6,5 +6,8 @@ import Model exposing (Model, Msg(..))
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Cmd.none )
+        SetProducts products ->
+            ( { model | products = products, loading = False }, Cmd.none )
+
+        ShowDecodeError error ->
+            Debug.todo "failed to decode a JSON"

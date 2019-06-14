@@ -1,14 +1,23 @@
 module View.ProductList exposing (view)
 
-import Html exposing (Html, button, div, h2, li, p, text, ul)
-import Html.Attributes exposing (class)
+import Html exposing (Html, button, div, h2, img, li, p, text, ul)
+import Html.Attributes exposing (class, src)
 import Model exposing (Model, Msg, Product)
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ ul [ class "flex flex-row" ] <| List.map viewProduct model.products ]
+        [ if model.loading then
+            img
+                [ class "px-40 py-10"
+                , src "https://i.imgur.com/JfPpwOA.gif"
+                ]
+                []
+
+          else
+            ul [ class "flex flex-row" ] <| List.map viewProduct model.products
+        ]
 
 
 viewProduct : Product -> Html Msg

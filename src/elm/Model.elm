@@ -10,12 +10,14 @@ module Model exposing
     )
 
 import Dict exposing (Dict)
+import Json.Decode as D
 import List.Extra as List
 import Maybe.Extra as Maybe
 
 
 type Msg
-    = NoOp
+    = SetProducts (List Product)
+    | ShowDecodeError D.Error
 
 
 type alias Model =
@@ -61,18 +63,10 @@ type CheckoutStatus
 
 initModel : Model
 initModel =
-    { products =
-        [ { id = 1, title = "iPad 4 Mini", price = 500.01, inventory = 1 }
-        , { id = 2, title = "H&M T-Shirt White", price = 10.99, inventory = 10 }
-        , { id = 3, title = "Charli XCX - Sucker CD", price = 19.99, inventory = 0 }
-        ]
-    , loading = False
-    , cart =
-        Dict.fromList
-            [ ( 1, 1 )
-            , ( 3, 2 )
-            ]
-    , checkoutStatus = Just Fail
+    { products = []
+    , loading = True
+    , cart = Dict.fromList []
+    , checkoutStatus = Nothing
     }
 
 
