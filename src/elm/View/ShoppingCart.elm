@@ -65,6 +65,7 @@ viewCartItem item =
                 , class "rounded-r"
                 , class "bg-gray-500"
                 , class "text-white"
+                , onClick <| RemoveFromCart item.id
                 ]
                 [ text "-" ]
             , span [ class "my-auto ml-auto" ]

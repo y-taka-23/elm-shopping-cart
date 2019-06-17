@@ -4,9 +4,12 @@ import Model
     exposing
         ( Model
         , Msg(..)
+        , decrementCart
         , decrementStock
+        , inCart
         , inStock
         , incrementCart
+        , incrementStock
         )
 
 
@@ -21,6 +24,18 @@ update msg model =
                 ( { model
                     | products = decrementStock model.products id
                     , cart = incrementCart model.cart id
+                  }
+                , Cmd.none
+                )
+
+            else
+                ( model, Cmd.none )
+
+        RemoveFromCart id ->
+            if inCart model.cart id then
+                ( { model
+                    | products = incrementStock model.products id
+                    , cart = decrementCart model.cart id
                   }
                 , Cmd.none
                 )

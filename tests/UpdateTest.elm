@@ -130,4 +130,31 @@ suite =
                         |> Tuple.first
                         |> Expect.equal original
             ]
+        , describe "update by RemoveFromCart"
+            [ fuzz2 model int "preserves the total number of products" <|
+                \original id ->
+                    let
+                        updated =
+                            Tuple.first <| Update.update (RemoveFromCart id) original
+                    in
+                    Expect.equal
+                        (totalNum updated.products updated.cart id)
+                        (totalNum original.products original.cart id)
+            , test "does nothing if the item is not in the cart" <|
+                \_ ->
+                    let
+                        original =
+                            { products =
+                                [ { id = 1, title = "A", price = 100, inventory = 10 }
+                                ]
+                            , loading = False
+                            , cart = Dict.fromList [ ( 1, 0 ) ]
+                            , checkoutStatus = Nothing
+                            }
+                    in
+                    original
+                        |> Update.update (RemoveFromCart 1)
+                        |> Tuple.first
+                        |> Expect.equal original
+            ]
         ]

@@ -58,6 +58,24 @@ suite =
                     Model.inStock products 3
                         |> Expect.false "the product 3 shouldn't be in stock"
             ]
+        , describe "inCart" <|
+            let
+                cart =
+                    Dict.fromList [ ( 1, 15 ), ( 2, 0 ) ]
+            in
+            [ test "returns True if you have the item in the cart" <|
+                \_ ->
+                    Model.inCart cart 1
+                        |> Expect.true "the item 1 should be in the cart"
+            , test "returns False if you don't have the item in the cart" <|
+                \_ ->
+                    Model.inCart cart 2
+                        |> Expect.false "the item 2 shouldn't be in the cart"
+            , test "returns False if the item is missing" <|
+                \_ ->
+                    Model.inCart cart 3
+                        |> Expect.false "the item 3 shouldn't be in the cart"
+            ]
         , describe "decrementStock" <|
             let
                 products =
@@ -81,6 +99,25 @@ suite =
                     Model.decrementStock products 3
                         |> Expect.equal products
             ]
+        , describe "incrementStock" <|
+            let
+                products =
+                    [ { id = 1, title = "A", price = 100, inventory = 10 }
+                    , { id = 2, title = "B", price = 200, inventory = 0 }
+                    ]
+            in
+            [ test "increments the stock if you have" <|
+                \_ ->
+                    Model.incrementStock products 1
+                        |> Expect.equal
+                            [ { id = 1, title = "A", price = 100, inventory = 11 }
+                            , { id = 2, title = "B", price = 200, inventory = 0 }
+                            ]
+            , test "does nothing if the product is mising" <|
+                \_ ->
+                    Model.incrementStock products 3
+                        |> Expect.equal products
+            ]
         , describe "incrementCart" <|
             let
                 cart =
@@ -96,5 +133,21 @@ suite =
                     Model.incrementCart cart 2
                         |> Expect.equal
                             (Dict.fromList [ ( 1, 10 ), ( 2, 1 ) ])
+            ]
+        , describe "decrementCart" <|
+            let
+                cart =
+                    Dict.fromList [ ( 1, 10 ), ( 2, 1 ) ]
+            in
+            [ test "decrements the item in the cart " <|
+                \_ ->
+                    Model.decrementCart cart 1
+                        |> Expect.equal
+                            (Dict.fromList [ ( 1, 9 ), ( 2, 1 ) ])
+            , test "unregisters the item if it's the last one" <|
+                \_ ->
+                    Model.decrementCart cart 2
+                        |> Expect.equal
+                            (Dict.fromList [ ( 1, 10 ) ])
             ]
         ]
