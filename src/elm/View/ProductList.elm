@@ -2,7 +2,8 @@ module View.ProductList exposing (view)
 
 import Html exposing (Html, button, div, h2, img, li, p, text, ul)
 import Html.Attributes exposing (class, src)
-import Model exposing (Model, Msg, Product)
+import Html.Events exposing (onClick)
+import Model exposing (Model, Msg(..), Product)
 
 
 view : Model -> Html Msg
@@ -38,6 +39,7 @@ viewProduct product =
             , class "bg-blue-500 hover:bg-blue-700"
             , class "rounded"
             , class "text-white"
+            , onClick <| AddToCart product.id
             ]
             [ text "Add to cart" ]
         ]

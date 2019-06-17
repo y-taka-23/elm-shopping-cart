@@ -5,6 +5,11 @@ module Model exposing
     , Model
     , Msg(..)
     , Product
+    , ProductId
+    , Quantity
+    , decrementStock
+    , inStock
+    , incrementCart
     , initModel
     , listCartItems
     )
@@ -17,6 +22,7 @@ import Maybe.Extra as Maybe
 
 type Msg
     = SetProducts (List Product)
+    | AddToCart ProductId
     | ShowDecodeError D.Error
 
 
@@ -92,3 +98,30 @@ listCartItems products cart =
 findProduct : List Product -> ProductId -> Maybe Product
 findProduct products id =
     List.find (\p -> p.id == id) products
+
+
+inStock : List Product -> ProductId -> Bool
+inStock products id =
+    case findProduct products id of
+        Nothing ->
+            False
+
+        Just product ->
+            product.inventory > 0
+
+
+decrementStock : List Product -> ProductId -> List Product
+decrementStock products id =
+    List.updateIf (\p -> p.id == id)
+        (\p -> { p | inventory = max 0 (p.inventory - 1) })
+        products
+
+
+incrementCart : Cart -> ProductId -> Cart
+incrementCart cart id =
+    case Dict.get id cart of
+        Nothing ->
+            Dict.insert id 1 cart
+
+        Just quantity ->
+            Dict.insert id (quantity + 1) cart

@@ -38,4 +38,63 @@ suite =
                             [ { id = 1, title = "A", price = 100, quantity = 15 }
                             ]
             ]
+        , describe "inStock" <|
+            let
+                products =
+                    [ { id = 1, title = "A", price = 100, inventory = 10 }
+                    , { id = 2, title = "B", price = 200, inventory = 0 }
+                    ]
+            in
+            [ test "returns True if you have the product in stock" <|
+                \_ ->
+                    Model.inStock products 1
+                        |> Expect.true "the product 1 should be in stock"
+            , test "returns False if the products is out of stock" <|
+                \_ ->
+                    Model.inStock products 2
+                        |> Expect.false "the product 2 shouldn't be in stock"
+            , test "returns False if the product is missing" <|
+                \_ ->
+                    Model.inStock products 3
+                        |> Expect.false "the product 3 shouldn't be in stock"
+            ]
+        , describe "decrementStock" <|
+            let
+                products =
+                    [ { id = 1, title = "A", price = 100, inventory = 10 }
+                    , { id = 2, title = "B", price = 200, inventory = 0 }
+                    ]
+            in
+            [ test "decrements the stock if you have" <|
+                \_ ->
+                    Model.decrementStock products 1
+                        |> Expect.equal
+                            [ { id = 1, title = "A", price = 100, inventory = 9 }
+                            , { id = 2, title = "B", price = 200, inventory = 0 }
+                            ]
+            , test "does nothing if the product is out of stock" <|
+                \_ ->
+                    Model.decrementStock products 2
+                        |> Expect.equal products
+            , test "does nothing if the product is mising" <|
+                \_ ->
+                    Model.decrementStock products 3
+                        |> Expect.equal products
+            ]
+        , describe "incrementCart" <|
+            let
+                cart =
+                    Dict.fromList [ ( 1, 10 ) ]
+            in
+            [ test "increments the item in the cart " <|
+                \_ ->
+                    Model.incrementCart cart 1
+                        |> Expect.equal
+                            (Dict.fromList [ ( 1, 11 ) ])
+            , test "registers a new item if it's missing" <|
+                \_ ->
+                    Model.incrementCart cart 2
+                        |> Expect.equal
+                            (Dict.fromList [ ( 1, 10 ), ( 2, 1 ) ])
+            ]
         ]

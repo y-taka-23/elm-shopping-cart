@@ -3,7 +3,8 @@ module View.ShoppingCart exposing (view)
 import Dict
 import Html exposing (Html, button, div, h2, h3, li, span, text, ul)
 import Html.Attributes exposing (class)
-import Model exposing (CartItem, Model, Msg, listCartItems)
+import Html.Events exposing (onClick)
+import Model exposing (CartItem, Model, Msg(..), listCartItems)
 
 
 view : Model -> Html Msg
@@ -56,6 +57,7 @@ viewCartItem item =
                 , class "rounded-l"
                 , class "bg-blue-500"
                 , class "text-white"
+                , onClick <| AddToCart item.id
                 ]
                 [ text "+" ]
             , button
