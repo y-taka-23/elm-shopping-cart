@@ -1,13 +1,28 @@
-port module Port exposing (decodeProducts, fetchProducts, setProducts)
+port module Port exposing
+    ( checkout
+    , decodeCheckoutStatus
+    , decodeProducts
+    , encodeCart
+    , fetchProducts
+    , setCheckoutStatus
+    , setProducts
+    )
 
 import Json.Decode as D
-import Model exposing (Product)
+import Json.Encode as E
+import Model exposing (Cart, CheckoutStatus(..), Product)
 
 
 port fetchProducts : () -> Cmd msg
 
 
 port setProducts : (D.Value -> msg) -> Sub msg
+
+
+port checkout : E.Value -> Cmd msg
+
+
+port setCheckoutStatus : (D.Value -> msg) -> Sub msg
 
 
 decodeProducts : D.Value -> Result D.Error (List Product)
@@ -21,3 +36,21 @@ decodeProducts =
                 (D.field "inventory" D.int)
     in
     D.decodeValue (D.list decoder)
+
+
+encodeCart : Cart -> E.Value
+encodeCart =
+    E.dict String.fromInt E.int
+
+
+decodeCheckoutStatus : D.Value -> Result D.Error CheckoutStatus
+decodeCheckoutStatus =
+    let
+        toStatus cond =
+            if cond then
+                Success
+
+            else
+                Fail
+    in
+    Result.map toStatus << D.decodeValue D.bool

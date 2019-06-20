@@ -41,6 +41,7 @@ view model =
             , class "bg-green-500 hover:bg-green-700"
             , class "rounded"
             , class "text-white"
+            , onClick Checkout
             ]
             [ text "Checkout" ]
         ]

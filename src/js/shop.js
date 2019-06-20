@@ -9,7 +9,15 @@ const _products = [
 module.exports = {
 
   getProducts (cb) {
-    setTimeout(() => cb(_products), 1000)
+    setTimeout(() => cb(_products), 3000)
+  },
+
+  buyProducts (cart, cb, errorCb) {
+    setTimeout(() => {
+      (Math.random() > 0.5 || navigator.userAgent.indexOf('PhantomJS') > -1)
+        ? cb()
+        : errorCb()
+    }, 100)
   }
 
 }

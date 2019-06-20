@@ -15,3 +15,15 @@ app.ports.fetchProducts.subscribe(() => {
     app.ports.setProducts.send(products);
   });
 });
+
+app.ports.checkout.subscribe(cart => {
+  shop.buyProducts(
+    cart,
+    () => {
+      app.ports.setCheckoutStatus.send(true);
+    },
+    () => {
+      app.ports.setCheckoutStatus.send(false);
+    },
+  );
+});

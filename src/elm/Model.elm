@@ -9,11 +9,13 @@ module Model exposing
     , Quantity
     , decrementCart
     , decrementStock
+    , flushCart
     , inCart
     , inStock
     , incrementCart
     , incrementStock
     , initModel
+    , isEmpty
     , listCartItems
     )
 
@@ -27,6 +29,8 @@ type Msg
     = SetProducts (List Product)
     | AddToCart ProductId
     | RemoveFromCart ProductId
+    | Checkout
+    | SetCheckoutStatus CheckoutStatus
     | ShowDecodeError D.Error
 
 
@@ -124,6 +128,11 @@ inCart cart id =
             quantity > 0
 
 
+isEmpty : Cart -> Bool
+isEmpty cart =
+    List.all ((>=) 0) <| List.map Tuple.second <| Dict.toList cart
+
+
 decrementStock : List Product -> ProductId -> List Product
 decrementStock products id =
     List.updateIf (\p -> p.id == id)
@@ -159,3 +168,8 @@ decrementCart cart id =
 
         Just quantity ->
             Dict.insert id (quantity - 1) cart
+
+
+flushCart : Cart -> Cart
+flushCart _ =
+    Dict.empty

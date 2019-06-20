@@ -27,7 +27,7 @@ import Model
         , Quantity
         )
 import Random exposing (maxInt)
-import Test exposing (Test, describe, fuzz2, test)
+import Test exposing (Test, describe, fuzz, fuzz2, test)
 import Update
 
 
@@ -156,5 +156,21 @@ suite =
                         |> Update.update (RemoveFromCart 1)
                         |> Tuple.first
                         |> Expect.equal original
+            ]
+        , describe "update by SetCheckoutStatus"
+            [ fuzz model "empties the cart if the status is Success" <|
+                \original ->
+                    original
+                        |> Update.update (SetCheckoutStatus Success)
+                        |> Tuple.first
+                        |> (\m -> m.cart)
+                        |> Expect.equal Dict.empty
+            , fuzz model "preserves the cart if the status is Fail" <|
+                \original ->
+                    original
+                        |> Update.update (SetCheckoutStatus Fail)
+                        |> Tuple.first
+                        |> (\m -> m.cart)
+                        |> Expect.equal original.cart
             ]
         ]

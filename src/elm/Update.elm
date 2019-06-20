@@ -1,15 +1,19 @@
 module Update exposing (update)
 
+import Command exposing (checkout)
 import Model
     exposing
-        ( Model
+        ( CheckoutStatus(..)
+        , Model
         , Msg(..)
         , decrementCart
         , decrementStock
+        , flushCart
         , inCart
         , inStock
         , incrementCart
         , incrementStock
+        , isEmpty
         )
 
 
@@ -42,6 +46,24 @@ update msg model =
 
             else
                 ( model, Cmd.none )
+
+        Checkout ->
+            if not (isEmpty model.cart) then
+                ( model, checkout model.cart )
+
+            else
+                ( model, Cmd.none )
+
+        SetCheckoutStatus Success ->
+            ( { model
+                | cart = flushCart model.cart
+                , checkoutStatus = Just Success
+              }
+            , Cmd.none
+            )
+
+        SetCheckoutStatus Fail ->
+            ( { model | checkoutStatus = Just Fail }, Cmd.none )
 
         ShowDecodeError error ->
             Debug.todo "failed to decode a JSON"

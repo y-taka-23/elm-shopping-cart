@@ -76,6 +76,23 @@ suite =
                     Model.inCart cart 3
                         |> Expect.false "the item 3 shouldn't be in the cart"
             ]
+        , describe "isEmpty" <|
+            [ test "returns True if the cart has no item" <|
+                \_ ->
+                    Dict.fromList []
+                        |> Model.isEmpty
+                        |> Expect.true "the empty cart has no item"
+            , test "returns False if the cart has a item of positive quantity" <|
+                \_ ->
+                    Dict.fromList [ ( 1, 15 ) ]
+                        |> Model.isEmpty
+                        |> Expect.false "the item 1 should be in the cart"
+            , test "returns True if the cart has a item of zero quantity" <|
+                \_ ->
+                    Dict.fromList [ ( 1, 0 ) ]
+                        |> Model.isEmpty
+                        |> Expect.true "the item 1 is registered but has quantity zero"
+            ]
         , describe "decrementStock" <|
             let
                 products =
@@ -149,5 +166,12 @@ suite =
                     Model.decrementCart cart 2
                         |> Expect.equal
                             (Dict.fromList [ ( 1, 10 ) ])
+            ]
+        , describe "flushCart" <|
+            [ test "unregisters all items from the cart" <|
+                \_ ->
+                    Dict.fromList [ ( 1, 15 ), ( 2, 0 ) ]
+                        |> Model.flushCart
+                        |> Expect.equal Dict.empty
             ]
         ]
