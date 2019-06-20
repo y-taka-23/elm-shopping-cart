@@ -38,7 +38,7 @@ suite =
                             [ { id = 1, title = "A", price = 100, quantity = 15 }
                             ]
             ]
-        , describe "inStock" <|
+        , describe "isInStock" <|
             let
                 products =
                     [ { id = 1, title = "A", price = 100, inventory = 10 }
@@ -47,33 +47,33 @@ suite =
             in
             [ test "returns True if you have the product in stock" <|
                 \_ ->
-                    Model.inStock products 1
+                    Model.isInStock products 1
                         |> Expect.true "the product 1 should be in stock"
             , test "returns False if the products is out of stock" <|
                 \_ ->
-                    Model.inStock products 2
+                    Model.isInStock products 2
                         |> Expect.false "the product 2 shouldn't be in stock"
             , test "returns False if the product is missing" <|
                 \_ ->
-                    Model.inStock products 3
+                    Model.isInStock products 3
                         |> Expect.false "the product 3 shouldn't be in stock"
             ]
-        , describe "inCart" <|
+        , describe "isInCart" <|
             let
                 cart =
                     Dict.fromList [ ( 1, 15 ), ( 2, 0 ) ]
             in
             [ test "returns True if you have the item in the cart" <|
                 \_ ->
-                    Model.inCart cart 1
+                    Model.isInCart cart 1
                         |> Expect.true "the item 1 should be in the cart"
             , test "returns False if you don't have the item in the cart" <|
                 \_ ->
-                    Model.inCart cart 2
+                    Model.isInCart cart 2
                         |> Expect.false "the item 2 shouldn't be in the cart"
             , test "returns False if the item is missing" <|
                 \_ ->
-                    Model.inCart cart 3
+                    Model.isInCart cart 3
                         |> Expect.false "the item 3 shouldn't be in the cart"
             ]
         , describe "isEmpty" <|

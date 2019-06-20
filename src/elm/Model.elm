@@ -10,12 +10,12 @@ module Model exposing
     , decrementCart
     , decrementStock
     , flushCart
-    , inCart
-    , inStock
     , incrementCart
     , incrementStock
     , initModel
     , isEmpty
+    , isInCart
+    , isInStock
     , listCartItems
     )
 
@@ -108,8 +108,8 @@ findProduct products id =
     List.find (\p -> p.id == id) products
 
 
-inStock : List Product -> ProductId -> Bool
-inStock products id =
+isInStock : List Product -> ProductId -> Bool
+isInStock products id =
     case findProduct products id of
         Nothing ->
             False
@@ -118,8 +118,8 @@ inStock products id =
             product.inventory > 0
 
 
-inCart : Cart -> ProductId -> Bool
-inCart cart id =
+isInCart : Cart -> ProductId -> Bool
+isInCart cart id =
     case Dict.get id cart of
         Nothing ->
             False

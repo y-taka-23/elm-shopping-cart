@@ -9,11 +9,11 @@ import Model
         , decrementCart
         , decrementStock
         , flushCart
-        , inCart
-        , inStock
         , incrementCart
         , incrementStock
         , isEmpty
+        , isInCart
+        , isInStock
         )
 
 
@@ -24,7 +24,7 @@ update msg model =
             ( { model | products = products, loading = False }, Cmd.none )
 
         AddToCart id ->
-            if inStock model.products id then
+            if isInStock model.products id then
                 ( { model
                     | products = decrementStock model.products id
                     , cart = incrementCart model.cart id
@@ -36,7 +36,7 @@ update msg model =
                 ( model, Cmd.none )
 
         RemoveFromCart id ->
-            if inCart model.cart id then
+            if isInCart model.cart id then
                 ( { model
                     | products = incrementStock model.products id
                     , cart = decrementCart model.cart id
