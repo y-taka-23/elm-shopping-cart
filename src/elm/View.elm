@@ -2,7 +2,8 @@ module View exposing (view)
 
 import Html exposing (Html, button, div, h1, nav, span, text)
 import Html.Attributes exposing (class)
-import Model exposing (CheckoutStatus(..), Model, Msg)
+import Html.Events exposing (onClick)
+import Model exposing (CheckoutStatus(..), Model, Msg(..))
 import View.ProductList as ProductList
 import View.ShoppingCart as ShoppingCart
 
@@ -69,6 +70,10 @@ viewAlert status =
                     ++ classes
                 )
                 [ span [ class "mr-4 my-auto" ] [ text contents ]
-                , button [ class "material-icons my-auto" ] [ text "close" ]
+                , button
+                    [ class "material-icons my-auto"
+                    , onClick UnsetCheckoutStatus
+                    ]
+                    [ text "close" ]
                 ]
             ]

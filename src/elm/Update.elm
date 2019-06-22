@@ -65,5 +65,8 @@ update msg model =
         SetCheckoutStatus Fail ->
             ( { model | checkoutStatus = Just Fail }, Cmd.none )
 
+        UnsetCheckoutStatus ->
+            ( { model | checkoutStatus = Nothing }, Cmd.none )
+
         ShowDecodeError error ->
             Debug.todo "failed to decode a JSON"

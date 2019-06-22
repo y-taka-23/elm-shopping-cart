@@ -31,6 +31,7 @@ type Msg
     | RemoveFromCart ProductId
     | Checkout
     | SetCheckoutStatus CheckoutStatus
+    | UnsetCheckoutStatus
     | ShowDecodeError D.Error
 
 
