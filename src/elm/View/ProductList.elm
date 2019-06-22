@@ -1,7 +1,7 @@
 module View.ProductList exposing (view)
 
 import Html exposing (Html, button, div, h2, img, li, p, text, ul)
-import Html.Attributes exposing (class, src)
+import Html.Attributes exposing (class, disabled, src)
 import Html.Events exposing (onClick)
 import Model exposing (Model, Msg(..), Product)
 
@@ -35,11 +35,21 @@ viewProduct product =
         , p [] [ text <| String.fromFloat product.price ]
         , p [] [ text <| "Stock: " ++ String.fromInt product.inventory ]
         , button
-            [ class "mt-4 mr-auto px-4 py-2"
-            , class "bg-blue-500 hover:bg-blue-700"
-            , class "rounded"
-            , class "text-white"
-            , onClick <| AddToCart product.id
-            ]
+            ([ class "mt-4 mr-auto px-4 py-2"
+             , class "bg-blue-500"
+             , class "rounded"
+             , class "text-white"
+             ]
+                ++ (if product.inventory > 0 then
+                        [ class "hover:bg-blue-700"
+                        , onClick <| AddToCart product.id
+                        ]
+
+                    else
+                        [ class "opacity-50 cursor-not-allowed"
+                        , disabled True
+                        ]
+                   )
+            )
             [ text "Add to cart" ]
         ]
