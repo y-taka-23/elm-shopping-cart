@@ -4,6 +4,7 @@ import Html exposing (Html, button, div, h2, img, li, p, text, ul)
 import Html.Attributes exposing (class, disabled, src)
 import Html.Events exposing (onClick)
 import Model exposing (Model, Msg(..), Product)
+import View.Currency as Currency
 
 
 view : Model -> Html Msg
@@ -32,7 +33,7 @@ viewProduct product =
             , class "font-bold"
             ]
             [ text product.title ]
-        , p [] [ text <| String.fromFloat product.price ]
+        , p [] [ text <| Currency.fromFloat product.price ]
         , p [] [ text <| "Stock: " ++ String.fromInt product.inventory ]
         , button
             ([ class "mt-4 mr-auto px-4 py-2"

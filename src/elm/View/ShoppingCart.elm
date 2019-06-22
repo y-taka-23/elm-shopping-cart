@@ -14,6 +14,7 @@ import Model
         , isInStock
         , listCartItems
         )
+import View.Currency as Currency
 
 
 view : Model -> Html Msg
@@ -40,7 +41,7 @@ view model =
             [ span [] [ text "Total: " ]
             , span [ class "ml-auto" ]
                 [ text <|
-                    String.fromFloat <|
+                    Currency.fromFloat <|
                         totalCartItems <|
                             listCartItems model.products model.cart
                 ]
@@ -99,7 +100,7 @@ viewCartItem products item =
                 ]
                 [ text "-" ]
             , span [ class "my-auto ml-auto" ]
-                [ text <| String.fromFloat <| subtotalCartItem item ]
+                [ text <| Currency.fromFloat <| subtotalCartItem item ]
             ]
         ]
 
