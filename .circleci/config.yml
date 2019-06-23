@@ -40,7 +40,7 @@ jobs:
     - run:
         name: Deploy
         command: |
-          if [ -n "$(git status --short docs" ]; then
+          if [ -n "$(git status --short docs)" ]; then
               git config --global user.name "TAKAHASHI Yuto" && \
               git config --global user.email "ytaka23dev@gmail.com" && \
               git add $GH_PAGES && \
