@@ -7,20 +7,58 @@ jobs:
     - image: circleci/node:11.15.0
     steps:
     - checkout
+    - restore_cache:
+        keys:
+        - yarn-{{ checksum "yarn.lock" }}
+        - elm-{{ checksum "elm.json" }}
     - run:
         name: Install dependencies
         command: yarn
     - run:
         name: Test
         command: yarn test
+    - save_cache:
+        key: yarn-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+    - save_cache:
+        key: elm-{{ checksum "elm.json" }}
+        paths:
+        - elm-stuff
+
+  deploy:
+    docker:
+    - image: circleci/node:11.15.0
+    steps:
+    - checkout
+    - run:
+        name: Install dependencies
+        command: yarn
     - run:
         name: Build
         command: yarn build
     - run:
         name: Deploy
         command: |
-            git config --global user.name "TAKAHASHI Yuto"
-            git config --global user.email "ytaka23dev@gmail.com"
-            git add docs
-            git commit -m "Publish by CircleCI [ci skip]"
-            git push
+          if [ -n "$(git status --short docs" ]; then
+              git config --global user.name "TAKAHASHI Yuto" && \
+              git config --global user.email "ytaka23dev@gmail.com" && \
+              git add $GH_PAGES && \
+              git commit -m "Publish by CircleCI [ci skip]" && \
+              git push
+          else
+              echo "nothing to commit in docs."
+          fi
+
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+    - build
+    - deploy:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
